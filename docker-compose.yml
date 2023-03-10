@@ -1,27 +1,19 @@
 version: "3.9"
 
+volumes:
+  perlite: {}
+
 services:
   perlite:
-    image: sec77/perlite:latest
+    image: haruvon/perlite:latest
     container_name: perlite
     restart: unless-stopped
     environment:
-      - NOTES_PATH=Demo
+      - NOTES_PATH=notes
       - HIDE_FOLDERS=docs,private,trash
       - LINE_BREAKS=true
-    volumes:
-      - ./perlite/Demo:/var/www/perlite/Demo:ro
-
-  web:
-    build:
-        context: ./web
-    image: sec77/perlite_web:stable
-    container_name: perlite_web
-    restart: unless-stopped
     ports:
-      - 80:80
-    volumes_from: 
-      - perlite       
-    depends_on:
-      - perlite
-
+      - 9005:80
+    volumes:
+      - ./perlite/Demo:/var/www/perlite/notes:ro
+      - perlite:/var/www/perlite:ro
